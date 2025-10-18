@@ -2,14 +2,17 @@
 
 import type { User } from "@supabase/supabase-js"
 import { Button } from "@/components/ui/button"
-import { createClient } from "@/lib/supabase/client"
+import { createBrowserClient } from "@supabase/ssr"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { LogOut, Plus, Home, Settings } from "lucide-react"
 
 export function DashboardNav({ user }: { user: User }) {
   const router = useRouter()
-  const supabase = createClient()
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+  )
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
